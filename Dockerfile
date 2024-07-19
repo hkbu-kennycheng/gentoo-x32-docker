@@ -10,7 +10,7 @@ RUN echo 'BINPKG_FORMAT="gpkg"' | cat >> /etc/portage/make.conf
 RUN getuto
 RUN echo 'dev-python/pillow -webp' | cat >> /etc/portage/package.use/pillow
 
-RUN emerge-webrsync -q && emerge -qDNu @world dev-vcs/git
+RUN emerge-webrsync -q && emerge -qu dev-vcs/git
 
 RUN bash -c 'cd /etc/portage && git init && git remote add origin https://github.com/hkbu-kennycheng/etc-portage-x32 && git fetch origin && git checkout -b main -t origin/main'
 
