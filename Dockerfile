@@ -7,6 +7,7 @@ RUN echo 'FEATURES="getbinpkg -ipc-sandbox -network-sandbox -pid-sandbox"' | cat
 RUN echo 'USE="-busybox -gnome -gstreamer -gtk-doc -introspection -lua -lz4 -perl -python -ruby -tiff -vala -vulkan -zink X acpi alsa apparmor bluetooth cjk cpu_flags_x86_aes cpu_flags_x86_avx cpu_flags_x86_avx2 cpu_flags_x86_mmx cpu_flags_x86_mmxext cpu_flags_x86_sse cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_sse4_1 cpu_flags_x86_sse4_2 cpu_flags_x86_ssse3 curl dbus dist-kernel elogind fcitx4 gles2 input_devices_libinput input_devices_synaptics jpeg lapack lm-sensors lzma opengl openh264 pulseaudio -system-mitkrb5 udev unicode v4l vaapi video_cards_amdgpu video_cards_i915 video_cards_intel video_cards_nouveau video_cards_radeon video_cards_radeonsi vim-syntax wayland webp xinerama"' | cat >> /etc/portage/make.conf
 RUN echo 'ACCEPT_LICENSE="@BINARY-REDISTRIBUTABLE"' | cat >> /etc/portage/make.conf
 RUN echo 'BINPKG_FORMAT="gpkg"' | cat >> /etc/portage/make.conf
+RUN getuto
 
 RUN emerge-webrsync -q && emerge -qDNu @world dev-vcs/git
 
