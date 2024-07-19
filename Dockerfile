@@ -8,7 +8,6 @@ RUN echo 'USE="-busybox -gnome -gstreamer -gtk-doc -introspection -lua -lz4 -per
 RUN echo 'ACCEPT_LICENSE="@BINARY-REDISTRIBUTABLE"' | cat >> /etc/portage/make.conf
 RUN echo 'BINPKG_FORMAT="gpkg"' | cat >> /etc/portage/make.conf
 RUN getuto
-RUN echo 'dev-python/pillow -webp' | cat >> /etc/portage/package.use/pillow
 
 RUN emerge-webrsync -q && emerge -qu dev-vcs/git
 
@@ -38,7 +37,8 @@ RUN echo 'sys-libs/libcap static-libs' | cat >> /etc/portage/package.use/libcap
 RUN echo 'virtual/imagemagick-tools tiff' | cat >> /etc/portage/package.use/imagemagick
 RUN echo 'media-gfx/imagemagick tiff' | cat >> /etc/portage/package.use/imagemagick
 RUN echo 'media-sound/mpg123 -pulseaudio' | cat >> /etc/portage/package.use/mpg123
+RUN echo 'dev-python/pillow -webp' | cat >> /etc/portage/package.use/pillow
 
 RUN echo 'sys-kernel/installkernel dracut' | cat >> /etc/portage/package.use/installkernel
 
-RUN emerge -uq app-containers/docker app-containers/docker-cli app-backup/mkstage4 app-admin/metalog app-containers/lxc app-editors/vim app-eselect/eselect-java app-eselect/eselect-repository app-i18n/fcitx app-i18n/fcitx-configtool app-i18n/fcitx-table-extra app-laptop/laptop-mode-tools app-misc/asciinema app-misc/jq app-misc/tmux app-mobilephone/scrcpy app-portage/gentoolkit app-text/mupdf dev-java/openjdk-bin dev-libs/weston dev-python/dbus-python dev-python/pip dev-util/android-tools dev-util/debootstrap dev-vcs/git games-arcade/opensonic media-fonts/noto media-gfx/feh media-gfx/gimp media-sound/alsa-utils media-sound/pamix media-video/mpv net-analyzer/speedtest-cli net-fs/smbnetfs net-fs/sshfs net-misc/aria2 net-misc/dhcpcd net-misc/tigervnc net-misc/yt-dlp net-wireless/iwd net-wireless/wpa_supplicant sys-apps/busybox sys-apps/pciutils sys-apps/usbutils sys-block/parted sys-firmware/sof-firmware sys-fs/bcache-tools sys-fs/btrfs-progs sys-kernel/linux-firmware sys-kernel/genkernel sys-kernel/gentoo-kernel-bin sys-process/htop www-client/surf x11-apps/xev x11-apps/xhost x11-apps/xinput x11-apps/xrandr x11-apps/xsetroot x11-apps/xwd x11-base/xorg-server x11-misc/dmenu x11-misc/slock x11-misc/xautolock x11-misc/xclip x11-terms/st x11-wm/dwm
+RUN emerge --exclude rust-bin -qDNu @world app-containers/docker app-containers/docker-cli app-backup/mkstage4 app-admin/metalog app-containers/lxc app-editors/vim app-eselect/eselect-java app-eselect/eselect-repository app-i18n/fcitx app-i18n/fcitx-configtool app-i18n/fcitx-table-extra app-laptop/laptop-mode-tools app-misc/asciinema app-misc/jq app-misc/tmux app-mobilephone/scrcpy app-portage/gentoolkit app-text/mupdf dev-java/openjdk-bin dev-libs/weston dev-python/dbus-python dev-python/pip dev-util/android-tools dev-util/debootstrap dev-vcs/git games-arcade/opensonic media-fonts/noto media-gfx/feh media-gfx/gimp media-sound/alsa-utils media-sound/pamix media-video/mpv net-analyzer/speedtest-cli net-fs/smbnetfs net-fs/sshfs net-misc/aria2 net-misc/dhcpcd net-misc/tigervnc net-misc/yt-dlp net-wireless/iwd net-wireless/wpa_supplicant sys-apps/busybox sys-apps/flatpak sys-apps/pciutils sys-apps/usbutils sys-block/parted sys-firmware/sof-firmware sys-fs/bcache-tools sys-fs/btrfs-progs sys-kernel/linux-firmware sys-kernel/genkernel sys-kernel/gentoo-kernel-bin sys-process/htop www-client/surf x11-apps/xev x11-apps/xhost x11-apps/xinput x11-apps/xrandr x11-apps/xsetroot x11-apps/xwd x11-base/xorg-server x11-misc/dmenu x11-misc/slock x11-misc/xautolock x11-misc/xclip x11-terms/st x11-wm/dwm
