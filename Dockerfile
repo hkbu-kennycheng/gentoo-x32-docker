@@ -32,6 +32,7 @@ RUN echo 'app-crypt/mit-krb5'  >> /etc/portage/package.mask/mit-krb5 \
     && echo 'media-libs/libsdl2 -fcitx4' >> /etc/portage/package.use/libsdl \
     && echo 'dev-qt/qtgui egl' >> /etc/portage/package.use/qtgui \
     && echo 'app-text/xmlto' >> /etc/portage/package.use/xmlto text \
+    && echo 'dev-libs/boost -context' >> /etc/portage/package.use/boost \
     && echo 'app-containers/waydroid -apparmor'  >> /etc/portage/package.use/waydroid \
     && echo 'app-crypt/gcr gtk'  >> /etc/portage/package.use/gcr \
     && echo 'media-libs/harfbuzz icu'  >> /etc/portage/package.use/harfbuzz \
