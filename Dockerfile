@@ -1,4 +1,4 @@
-FROM kennycheng/gentoo-stage3:x32
+FROM kennycheng/gentoo-stage3:x32-openrc
 
 ARG MAKEOPTS
 ARG EMERGE_DEFAULT_OPTS
