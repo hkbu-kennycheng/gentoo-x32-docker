@@ -1,4 +1,4 @@
-FROM kennycheng/gentoo-stage4:x32-systemd
+FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
