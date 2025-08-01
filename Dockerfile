@@ -17,6 +17,7 @@ RUN eselect repository add x32-overlay git https://github.com/hkbu-kennycheng/x3
 RUN cd /etc/portage && git init && git remote add origin https://github.com/hkbu-kennycheng/etc-portage-x32 && git fetch origin && git checkout -b main -t origin/main
 
 RUN echo 'app-crypt/mit-krb5'  >> /etc/portage/package.mask/mit-krb5 \
+    && echo '>=gnome-base/librsvg-2.60' >>/etc/portage/package.mask/librsvg \
     && echo 'app-mobilephone/scrcpy ~amd64'  >> /etc/portage/package.accept_keywords/scrcpy \
     && echo 'games-arcade/opensonic ~amd64'  >> /etc/portage/package.accept_keywords/opensonic \
     && echo 'net-fs/smbnetfs ~amd64'  >> /etc/portage/package.accept_keywords/smbnetfs \
