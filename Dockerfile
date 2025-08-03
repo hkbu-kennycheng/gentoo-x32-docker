@@ -52,7 +52,7 @@ RUN echo 'app-crypt/mit-krb5'  >> /etc/portage/package.mask/mit-krb5 \
     && echo 'media-gfx/imagemagick tiff'  >> /etc/portage/package.use/imagemagick \
     && echo 'media-sound/mpg123 -pulseaudio'  >> /etc/portage/package.use/mpg123 \
     && echo 'media-video/pipewire bluetooth dbus extra ffmpeg fftw flatpak -pipewire-alsa -sound-server v4l' >> /etc/portage/package.use/pipewire \
-    && echo 'dev-python/pillow -webp'  >> /etc/portage/package.use/pillow \
+    && echo 'dev-python/pillow -webp -truetype'  >> /etc/portage/package.use/pillow \
     && echo 'sys-kernel/installkernel dracut uki ukify'  >> /etc/portage/package.use/installkernel \
     && echo 'sys-apps/systemd boot ukify' >> /etc/portage/package.use/systemd \
     && echo 'dev-libs/libutf8proc -cjk' >> /etc/portage/package.use/libutf8proc
