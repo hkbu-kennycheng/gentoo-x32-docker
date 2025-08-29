@@ -53,12 +53,10 @@ RUN echo 'app-crypt/mit-krb5'  >> /etc/portage/package.mask/mit-krb5 \
     && echo 'virtual/imagemagick-tools tiff'  >> /etc/portage/package.use/imagemagick \
     && echo 'media-gfx/imagemagick tiff'  >> /etc/portage/package.use/imagemagick \
     && echo 'media-sound/mpg123 -pulseaudio'  >> /etc/portage/package.use/mpg123 \
-    && echo 'media-video/pipewire bluetooth dbus extra ffmpeg fftw flatpak -pipewire-alsa -sound-server v4l' >> /etc/portage/package.use/pipewire \
+    && echo 'media-video/pipewire bluetooth dbus extra ffmpeg fftw flatpak pipewire-alsa sound-server v4l' >> /etc/portage/package.use/pipewire \
     && echo 'dev-python/pillow -webp -truetype'  >> /etc/portage/package.use/pillow \
     && echo 'sys-kernel/installkernel dracut uki'  >> /etc/portage/package.use/installkernel \
     && echo 'sys-apps/systemd boot' >> /etc/portage/package.use/systemd \
     && echo 'dev-libs/libutf8proc -cjk' >> /etc/portage/package.use/libutf8proc
 
 RUN emerge -qDNu @world --exclude dev-util/cargo-c app-containers/docker app-containers/docker-cli app-admin/metalog app-editors/vim app-eselect/eselect-java app-laptop/laptop-mode-tools app-misc/asciinema app-misc/jq app-misc/tmux app-mobilephone/scrcpy app-portage/gentoolkit app-text/mupdf dev-java/openjdk-bin dev-python/dbus-python dev-python/pip dev-util/android-tools media-video/pipewire media-fonts/noto media-gfx/feh media-video/mpv net-analyzer/speedtest-cli net-fs/smbnetfs net-fs/sshfs net-misc/aria2 net-misc/tigervnc net-misc/yt-dlp net-wireless/wpa_supplicant sys-apps/busybox sys-apps/flatpak sys-apps/pciutils sys-apps/usbutils sys-block/parted sys-firmware/sof-firmware sys-fs/bcache-tools sys-fs/btrfs-progs sys-kernel/linux-firmware sys-process/htop sys-process/btop x11-apps/xev x11-apps/xhost x11-apps/xinput x11-apps/xrandr x11-apps/xsetroot x11-apps/xwd x11-misc/dmenu x11-terms/st gui-wm/dwl gui-apps/wmenu gui-apps/foot && rm -rf /var/cache/distfiles/*
-
-RUN emerge -v sys-kernel/gentoo-kernel && rm -rf /var/cache/distfiles/*
