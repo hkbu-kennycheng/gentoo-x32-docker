@@ -8,7 +8,8 @@ RUN echo "dev-libs/libdbusmenu gtk3" >> /etc/portage/package.use/libdbusmenu \
     && echo "gnome-base/gvfs udisks" >> /etc/portage/package.use/gvfs \
     && echo "sys-apps/systemd policykit" >> /etc/portage/package.use/systemd \
     && echo "dev-libs/glib introspection" >> /etc/portage/package.use/glib \
-    && echo "net-misc/networkmanager dhcpcd" >> /etc/portage/package.use/networkmanager
+    && echo "net-misc/networkmanager dhcpcd" >> /etc/portage/package.use/networkmanager \
+    && echo "gui-libs/libwlembed gtk" >> /etc/portage/package.use/libwlembed
 
 RUN emerge --quiet --noreplace \
     xfce-base/xfce4-meta \
