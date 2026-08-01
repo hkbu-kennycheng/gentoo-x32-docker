@@ -14,7 +14,7 @@ RUN emerge-webrsync -q && emerge -qu dev-vcs/git && emerge -q eselect-repository
 
 RUN eselect repository add x32-overlay git https://github.com/hkbu-kennycheng/x32-overlay.git && emerge --sync x32-overlay
 
-RUN cd /etc/portage && git init && git remote add origin https://github.com/hkbu-kennycheng/etc-portage-x32 && git fetch origin && git checkout -b main -t origin/main
+RUN cd /etc/portage && git init && git remote add origin https://github.com/hkbu-kennycheng/etc-portage-x32.git && git fetch origin && git checkout -b main -t origin/main
 
 RUN echo 'app-crypt/mit-krb5'  >> /etc/portage/package.mask/mit-krb5 \
     && echo '>=gnome-base/librsvg-2.60' >>/etc/portage/package.mask/librsvg \
@@ -62,4 +62,4 @@ RUN echo 'app-crypt/mit-krb5'  >> /etc/portage/package.mask/mit-krb5 \
     && echo 'dev-qt/qtgui eglfs egl' >> /etc/portage/package.use/qtgui \
     && echo 'net-libs/ngtcp2 gnutls' >> /etc/portage/package.use/ngtcp2
 
-RUN emerge -qDNu @world --exclude dev-util/cargo-c app-admin/metalog app-editors/vim app-eselect/eselect-java app-laptop/laptop-mode-tools app-misc/asciinema app-misc/jq app-misc/tmux app-mobilephone/scrcpy app-office/onlyoffice-bin app-portage/gentoolkit app-text/mupdf dev-java/openjdk-bin dev-python/dbus-python dev-python/pip dev-util/android-tools media-video/pipewire media-fonts/noto media-gfx/feh media-video/mpv net-analyzer/speedtest-cli net-fs/smbnetfs net-fs/sshfs net-misc/aria2 net-misc/tigervnc net-misc/yt-dlp net-wireless/wpa_supplicant sys-apps/busybox sys-apps/flatpak sys-apps/pciutils sys-apps/usbutils sys-block/parted sys-firmware/sof-firmware sys-fs/bcache-tools sys-fs/btrfs-progs sys-kernel/linux-firmware sys-process/htop sys-process/btop x11-apps/xev x11-apps/xhost x11-apps/xinput x11-apps/xrandr x11-apps/xsetroot x11-apps/xwd x11-misc/dmenu x11-terms/st gui-wm/dwl gui-apps/wmenu gui-apps/foot && rm -rf /var/cache/distfiles/*
+RUN emerge -qDNu @world --exclude dev-util/cargo-c app-admin/metalog app-editors/vim app-eselect/eselect-java app-laptop/laptop-mode-tools app-misc/asciinema app-misc/jq app-misc/tmux app-mobilephone/scrcpy app-office/onlyoffice-bin app-portage/gentoolkit app-text/mupdf dev-java/openjdk-bin dev-python/dbus-python dev-python/pip dev-util/android-tools media-video/pipewire media-fonts/noto media-gfx/feh media-video/mpv net-analyzer/speedtest-cli net-fs/smbnetfs net-fs/sshfs net-misc/aria2 net-misc/tigervnc net-misc/yt-dlp net-wireless/wpa_supplicant sys-apps/busybox sys-apps/flatpak sys-apps/pciutils sys-apps/usbutils sys-block/parted sys-firmware/sof-firmware sys-fs/bcache-tools sys-fs/btrfs-progs sys-kernel/linux-firmware sys-process/htop sys-process/btop x11-apps/xev x11-apps/xhost x11-apps/xinput x11-apps/xrandr x11-apps/xsetroot x11-apps/xwd x11-misc/dmenu x11-terms/st gui-wm/dwl gui-apps/wmenu gui-apps/foot www-client/surf && rm -rf /var/cache/distfiles/*
