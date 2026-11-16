@@ -9,14 +9,22 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      # Mount the x32-overlay checkout (clone of hkbu-kennycheng/x32-overlay)
+      # Mount the x32-overlay checkout (clone of hkbu-kennycheng/gentoo-x32-overlay)
       # at the canonical repos location.
-      - ../x32-overlay:/var/db/repos/x32-overlay:z
-      # Persistent portage cache/distfiles between runs
-      - portage-cache:/var/cache/binpkgs
+      - ../gentoo-x32-overlay:/var/db/repos/x32-overlay:z
+      # Persistent caches between runs
       - distfiles:/var/cache/distfiles
+      - binpkgs:/var/cache/binpkgs
+      - ccache:/var/cache/ccache
+      # Persistent gentoo portage tree (survives container recreation)
+      - gentoo:/var/db/repos/gentoo
+    tmpfs:
+      # Ebuild build dirs are ephemeral
+      - /var/tmp/portage:size=16G
     command: sleep infinity
 
 volumes:
-  portage-cache:
   distfiles:
+  binpkgs:
+  ccache:
+  gentoo:

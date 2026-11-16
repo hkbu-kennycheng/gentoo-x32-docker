@@ -18,4 +18,13 @@ RUN mkdir -p /etc/portage/package.mask /etc/portage/package.use && \
 	ln -sfn /var/db/repos/x32-overlay/profiles/x32/package.mask /etc/portage/package.mask/x32-overlay && \
 	ln -sfn /var/db/repos/x32-overlay/profiles/x32/package.use /etc/portage/package.use/x32-overlay
 
+# Developer tooling: ebuild linting, manifest/digest helpers, package queries
+RUN echo '>=dev-libs/tree-sitter-bash-0.25.1 python' >> /etc/portage/package.use/pkgcheck && \
+	emerge --oneshot --nodeps --noreplace \
+	app-portage/gentoolkit dev-util/pkgdev dev-util/pkgcheck && \
+	rm -rf /var/tmp/*
+
+# Pre-seed a ccache directory (owned by portage; mounts at /var/cache/ccache)
+RUN mkdir -p /var/cache/ccache && chown portage:portage /var/cache/ccache
+
 CMD ["bash"]
