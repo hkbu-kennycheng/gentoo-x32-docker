@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1
+# Dev container for the Gentoo x32 environment.
+#
+# Base: Gentoo x32 stage4 (systemd) image. The x32-overlay repository is
+# expected to be bind-mounted at /var/db/repos/x32-overlay (see compose.yaml).
+FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
+
+# Portage needs sandboxing disabled in the container environment
+RUN echo 'FEATURES="${FEATURES} -sandbox -usersandbox -network-sandbox -ipc-sandbox -pid-sandbox -mount-sandbox -merge-sync"' >> /etc/portage/make.conf
+
+# Register the overlay repository
+RUN mkdir -p /etc/portage/repos.conf && \
+	printf '[x32-overlay]\nlocation = /var/db/repos/x32-overlay\nauto-sync = no\n' > /etc/portage/repos.conf/x32-overlay.conf
+
+# Wire up the x32 profile: patches, package.mask, package.use
+RUN mkdir -p /etc/portage/package.mask /etc/portage/package.use && \
+	ln -sfn /var/db/repos/x32-overlay/profiles/x32/patches /etc/portage/patches && \
+	ln -sfn /var/db/repos/x32-overlay/profiles/x32/package.mask /etc/portage/package.mask/x32-overlay && \
+	ln -sfn /var/db/repos/x32-overlay/profiles/x32/package.use /etc/portage/package.use/x32-overlay
+
+CMD ["bash"]
