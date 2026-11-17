@@ -1,4 +1,10 @@
 # Per-package USE flags for the x32 daily-use binhost.
+
+# git's Rust implementation does not build for x32 (cargo-meson.sh does not
+# set CARGO_BUILD_TARGET=x86_64-unknown-linux-gnux32, so the Rust objects are
+# ELF64 and fail to link into the ELF32 binaries).
+dev-vcs/git -rust
+
 dev-lang/python -bluetooth
 app-i18n/fcitx-qt qt5
 dev-libs/libxml2 python
@@ -23,3 +29,9 @@ sys-kernel/installkernel dracut uki
 sys-apps/systemd boot
 dev-libs/libutf8proc -cjk
 net-libs/ngtcp2 gnutls
+# Desktop / session bits shared by the xfce4 variants.
+dev-libs/libdbusmenu gtk3
+xfce-base/thunar udisks
+gnome-base/gvfs udisks
+net-misc/networkmanager dhcpcd
+gui-libs/libwlembed gtk

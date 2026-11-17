@@ -21,9 +21,6 @@ RUN emerge-webrsync -q \
 RUN eselect repository add x32-overlay git https://github.com/hkbu-kennycheng/x32-overlay.git \
     && emerge --sync x32-overlay
 
-# Shared build-host configuration (USE flags, keywords, per-package settings).
-COPY images/stage4-common/portage/ /etc/portage/
-
 # The x32-overlay carries the ABI-correct x32 patches (ruby coroutines, etc.)
 # and, via the x32 profile, the x32-capable rust-bin. Wire the patch tree so
 # eapply_user applies it; profile.bashrc also honours this path.
@@ -31,9 +28,8 @@ RUN mkdir -p /etc/portage/patches \
     && rmdir /etc/portage/patches \
     && ln -s /var/db/repos/x32-overlay/profiles/x32/patches /etc/portage/patches
 
-# The ABI_X86="x32 64" profile leaves git's +rust flag on; the x32 rust-bin
-# from the overlay satisfies it, so upgrade git after the overlay is present.
-RUN emerge -q --noreplace 'dev-vcs/git[rust]'
+# Shared build-host configuration (USE flags, keywords, per-package settings).
+COPY images/stage4-common/portage/ /etc/portage/
 
 RUN emerge --exclude rust-bin -qDNu @world $(cat /etc/portage/sets/stage4) \
     && rm -rf /var/cache/distfiles/*
