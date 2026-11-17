@@ -31,5 +31,5 @@ RUN mkdir -p /etc/portage/patches \
 # Shared build-host configuration (USE flags, keywords, per-package settings).
 COPY images/stage4-common/portage/ /etc/portage/
 
-RUN emerge --exclude rust-bin -qDNu @world $(cat /etc/portage/sets/stage4) \
+RUN emerge --exclude rust-bin -qDNu @world $(grep -v "^#" /etc/portage/sets/stage4) \
     && rm -rf /var/cache/distfiles/*

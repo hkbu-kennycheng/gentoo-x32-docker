@@ -34,5 +34,5 @@ COPY images/stage4-common/portage/ /etc/portage/
 
 RUN emerge -qDNu @world \
     --exclude dev-util/cargo-c --exclude dev-vcs/git \
-    --exclude dev-lang/rust-bin $(cat /etc/portage/sets/stage4) \
+    --exclude dev-lang/rust-bin $(grep -v "^#" /etc/portage/sets/stage4) \
     && rm -rf /var/cache/distfiles/*

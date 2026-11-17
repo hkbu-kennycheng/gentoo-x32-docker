@@ -1,5 +1,3 @@
-# World additions for the x32 daily-use binhost image.
-# Built with `emerge -qDNu @world $(cat /etc/portage/sets/stage4)`.
 app-admin/metalog
 app-editors/vim
 app-eselect/eselect-java

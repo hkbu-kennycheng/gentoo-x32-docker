@@ -30,8 +30,9 @@ sys-apps/systemd boot policykit
 dev-libs/libutf8proc -cjk
 net-libs/ngtcp2 gnutls
 # Desktop / session bits shared by the xfce4 variants.
-dev-libs/libdbusmenu gtk3
+dev-libs/libdbusmenu introspection
 dev-libs/glib introspection
+xfce-base/xfce4-panel dbusmenu
 xfce-base/thunar udisks
 gnome-base/gvfs udisks
 net-misc/networkmanager dhcpcd
