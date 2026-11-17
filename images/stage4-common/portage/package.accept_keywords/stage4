@@ -1,6 +1,5 @@
 # ~amd64 / ** packages needed on the x32 binhost.
 games-arcade/opensonic ~amd64
-net-fs/smbnetfs ~amd64
 app-containers/waydroid ~amd64
 dev-python/gbinder ~amd64
 dev-python/pyclip ~amd64
