@@ -32,7 +32,8 @@ RUN mkdir -p /etc/portage/patches \
 # Shared build-host configuration (USE flags, keywords, per-package settings).
 COPY images/stage4-common/portage/ /etc/portage/
 
-RUN emerge -qDNu @world \
-    --exclude dev-util/cargo-c --exclude dev-vcs/git \
-    --exclude dev-lang/rust-bin $(grep -v "^#" /etc/portage/sets/stage4) \
+# The x32 toolchain set is fixed: rust-bin from the overlay, cargo-c masked
+# (>=0.10.17 needs a port), git on its C implementation.
+RUN emerge -qDNu @world --exclude dev-util/cargo-c --exclude dev-vcs/git \
+    $(grep -v '^#' /etc/portage/sets/stage4) \
     && rm -rf /var/cache/distfiles/*

@@ -1,4 +1,4 @@
-# ~amd64 packages needed on the binhost.
+# ~amd64 / ** packages needed on the x32 binhost.
 app-mobilephone/scrcpy ~amd64
 games-arcade/opensonic ~amd64
 net-fs/smbnetfs ~amd64
@@ -15,5 +15,7 @@ app-i18n/fcitx-qt:5 ~amd64
 app-i18n/fcitx-table-extra:5 ~amd64
 gui-wm/dwl ~amd64
 sys-boot/uefi-mkconfig ~amd64
-# librsvg 2.62.x from the overlay (masked below 2.60) needs acceptance.
+# needed by xfce4-screensaver[wayland]; upstream only has ~arch keywords here
+gui-libs/libwlembed ~amd64
+# librsvg 2.62.x from the x32-overlay (upstream >=2.60 is masked).
 gnome-base/librsvg **

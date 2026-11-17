@@ -1,6 +1,12 @@
 # Masked to keep the x32 binhost consistent with the x32-overlay ebuilds.
 app-crypt/mit-krb5
 >=net-libs/webkit-gtk-2.60
-# librsvg >= 2.60 is a Rust package; the x32-capable librsvg lives in the
-# x32-overlay and is selected by dropping the masked newer versions.
+# librsvg >= 2.60 is a Rust package; use the x32-overlay version instead.
 >=gnome-base/librsvg-2.60
+# The Rust toolchain packages do not build for x32 (no ELF32 support in the
+# Rust bootstrap chain). rust-bin is used instead.
+dev-lang/rust
+# dev-lang/go bootstraps from source and cycles on itself on x32; nothing in
+# the stage4 set may depend on it (dev-util/android-tools was dropped).
+dev-lang/go
+dev-lang/go-bootstrap

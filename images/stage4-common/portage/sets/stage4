@@ -12,7 +12,6 @@ app-text/mupdf
 dev-java/openjdk-bin
 dev-python/dbus-python
 dev-python/pip
-dev-util/android-tools
 media-video/pipewire
 media-fonts/noto
 media-gfx/feh
