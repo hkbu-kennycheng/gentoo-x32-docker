@@ -20,6 +20,21 @@ Each directory holds a `Containerfile` and an `image.env` with `IMAGE`, `TAG`
 and optional `ALIASES` / `STAGE3_FLAVOR`. The env file is the single source of
 truth for both local builds and CI.
 
+### Shared build-host configuration (`images/stage4-common`)
+
+The stage4 images are the daily-use desktop systems whose packages are served
+to x32 machines through the binhost. Their build-host portage configuration is
+shared in `images/stage4-common/portage/` and copied into every stage4 image:
+
+- `package.use/stage4` — per-package USE flags (desktop, fcitx, pipewire, …)
+- `package.accept_keywords/stage4`, `package.mask/stage4`, `package.unmask/`
+- `profile/use.mask` — `-efistub` (no EFI stub/UKI on x32)
+- `sets/stage4` — world additions built with `emerge @world $(cat …)`
+
+The stage4 Containerfiles bootstrap `dev-vcs/git` with `USE=-rust` (Rust git
+cannot link for x32), sync `x32-overlay`, and wire its patch tree into
+`/etc/portage/patches` before building `@world`.
+
 Branch → image mapping for the old branches:
 
 - `stage3-openrc` → `images/stage3-openrc` (also `.devcontainer/`)
