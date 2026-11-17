@@ -9,6 +9,10 @@
 # runner every run reuses the previous layers (do not pass --no-cache).
 # Images with STAGE3_FLAVOR in image.env get the upstream stage3 tarball
 # downloaded automatically.
+#
+# The build context is the repository root so stage4 images can COPY the
+# shared images/stage4-common/ portage configuration; Containerfiles are
+# referenced by -f.
 set -eu
 
 name=${1:?usage: $0 <image-name> [--push]}
@@ -30,7 +34,7 @@ fi
 "$engine" build --pull=newer -f "$dir/Containerfile" -t "$tag" \
 	--build-arg "MAKEOPTS=${MAKEOPTS:--j$(nproc)}" \
 	--build-arg "EMERGE_DEFAULT_OPTS=${EMERGE_DEFAULT_OPTS:---jobs=4}" \
-	"$dir"
+	"$root"
 
 if [ "$push" = "--push" ]; then
 	"$engine" push "$tag"

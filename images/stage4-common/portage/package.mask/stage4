@@ -1,0 +1,6 @@
+# Masked to keep the x32 binhost consistent with the x32-overlay ebuilds.
+app-crypt/mit-krb5
+>=net-libs/webkit-gtk-2.60
+# librsvg >= 2.60 is a Rust package; the x32-capable librsvg lives in the
+# x32-overlay and is selected by dropping the masked newer versions.
+>=gnome-base/librsvg-2.60

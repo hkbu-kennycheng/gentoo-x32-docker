@@ -1,6 +1,10 @@
+# Binhost server: quickly packages the installed world and serves the
+# gpkg binpkgs over HTTP on port 8000.
+#
+# Build context is the repository root (scripts/build.sh passes it).
 FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 
-ADD entrypoint.sh /entrypoint.sh
+ADD images/stage4-systemd-binhost/entrypoint.sh /entrypoint.sh
 
 EXPOSE 8000
 

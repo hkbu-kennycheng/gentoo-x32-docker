@@ -1,3 +1,7 @@
+# Gentoo x32 stage4 (systemd) + Xfce4 desktop.
+#
+# Build context is the repository root; the shared images/stage4-common/portage
+# configuration was installed by the stage4-systemd base image.
 FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 
 ARG MAKEOPTS
@@ -6,9 +10,8 @@ ARG EMERGE_DEFAULT_OPTS
 RUN echo "dev-libs/libdbusmenu gtk3" >> /etc/portage/package.use/libdbusmenu \
     && echo "xfce-base/thunar udisks" >> /etc/portage/package.use/thunar \
     && echo "gnome-base/gvfs udisks" >> /etc/portage/package.use/gvfs \
-    && echo "sys-apps/systemd policykit" >> /etc/portage/package.use/systemd \
-    && echo "dev-libs/glib introspection" >> /etc/portage/package.use/glib \
-    && echo "net-misc/networkmanager dhcpcd" >> /etc/portage/package.use/networkmanager
+    && echo "net-misc/networkmanager dhcpcd" >> /etc/portage/package.use/networkmanager \
+    && echo "gui-libs/libwlembed gtk" >> /etc/portage/package.use/libwlembed
 
 RUN emerge --quiet --noreplace \
     xfce-base/xfce4-meta \

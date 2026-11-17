@@ -1,0 +1,5 @@
+# Keep the build context small. Downloaded stage3 tarballs are ADDed
+# explicitly by the stage3 Containerfiles and must stay in the context.
+images/*/stage3.tar.xz.part
+.buildcache/
+.git/
