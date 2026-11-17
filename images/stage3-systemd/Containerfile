@@ -1,0 +1,11 @@
+# syntax=docker/dockerfile:1
+# Gentoo x32 stage3 (systemd) container base.
+#
+# scripts/fetch-stage3.sh systemd images/stage3-systemd downloads the latest
+# upstream stage3 tarball as stage3.tar.xz next to this file; ADD unpacks it.
+FROM scratch
+ADD stage3.tar.xz /
+RUN echo 'FEATURES="-ipc-sandbox -pid-sandbox -network-sandbox -usersandbox -mount-sandbox -sandbox"' >> /etc/portage/make.conf
+RUN echo 'FEATURES="${FEATURES} parallel-install parallel-fetch -merge-sync"' >> /etc/portage/make.conf
+
+CMD ["bash"]

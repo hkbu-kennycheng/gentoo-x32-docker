@@ -1,0 +1,44 @@
+name: build-image
+description: Build one image from images/<image> and push it to Docker Hub.
+
+inputs:
+  image:
+    description: Image directory name under images/ (e.g. stage4-systemd)
+    required: true
+  only:
+    description: Comma-separated image list to restrict the build to (empty = build)
+    required: false
+    default: ""
+  dockerhub_username:
+    required: true
+  dockerhub_token:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - id: check
+      shell: bash
+      env:
+        IMAGE: ${{ inputs.image }}
+        ONLY: ${{ inputs.only }}
+      run: |
+        if [ -n "$ONLY" ] && ! tr ',' '\n' <<<"$ONLY" | tr -d ' ' | grep -qxF "$IMAGE"; then
+          echo "::notice::$IMAGE skipped (only=$ONLY)"
+        else
+          echo "build=1" >> "$GITHUB_OUTPUT"
+        fi
+
+    - if: steps.check.outputs.build == '1'
+      shell: bash
+      env:
+        DOCKERHUB_USERNAME: ${{ inputs.dockerhub_username }}
+        DOCKERHUB_TOKEN: ${{ inputs.dockerhub_token }}
+      run: echo "$DOCKERHUB_TOKEN" | podman login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
+
+    # Layer cache is the runner's persistent podman store; see scripts/build.sh.
+    - if: steps.check.outputs.build == '1'
+      shell: bash
+      env:
+        IMAGE: ${{ inputs.image }}
+      run: scripts/build.sh "$IMAGE" --push

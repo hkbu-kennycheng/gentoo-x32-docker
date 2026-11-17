@@ -1,0 +1,67 @@
+name: build-images
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Comma-separated image dirs to build (empty = all)"
+        type: string
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - "images/**"
+      - "scripts/**"
+      - ".github/**"
+  schedule:
+    # Weekly: pick up new upstream stage3 tarballs and refreshed binpkgs.
+    - cron: "0 4 * * 6"
+
+permissions:
+  contents: read
+
+# Full @world builds are expensive; never run two CI builds concurrently.
+concurrency:
+  group: build-images
+  cancel-in-progress: false
+
+jobs:
+  stage3:
+    name: ${{ matrix.image }}
+    runs-on: [self-hosted, linux, x64, podman]
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [stage3-openrc, stage3-systemd]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/build-image
+        with:
+          image: ${{ matrix.image }}
+          only: ${{ inputs.only }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  stage4:
+    needs: stage3
+    name: ${{ matrix.image }}
+    runs-on: [self-hosted, linux, x64, podman]
+    timeout-minutes: 720
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - stage4-openrc
+          - stage4-systemd
+          - stage4-systemd-xfce4
+          - stage4-systemd-xfce4-overlay
+          - stage4-systemd-binhost
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/build-image
+        with:
+          image: ${{ matrix.image }}
+          only: ${{ inputs.only }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}

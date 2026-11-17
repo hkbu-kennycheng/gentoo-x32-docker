@@ -1,0 +1,3 @@
+# Downloaded upstream stage3 tarballs (scripts/fetch-stage3.sh)
+images/stage3-*/stage3.tar.xz
+images/stage3-*/stage3.tar.xz.part
