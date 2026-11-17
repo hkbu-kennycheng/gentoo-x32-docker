@@ -26,11 +26,12 @@ media-sound/mpg123 -pulseaudio
 media-video/pipewire bluetooth dbus extra ffmpeg fftw flatpak pipewire-alsa sound-server v4l
 dev-python/pillow -webp -truetype
 sys-kernel/installkernel dracut uki
-sys-apps/systemd boot
+sys-apps/systemd boot policykit
 dev-libs/libutf8proc -cjk
 net-libs/ngtcp2 gnutls
 # Desktop / session bits shared by the xfce4 variants.
 dev-libs/libdbusmenu gtk3
+dev-libs/glib introspection
 xfce-base/thunar udisks
 gnome-base/gvfs udisks
 net-misc/networkmanager dhcpcd
