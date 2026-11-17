@@ -11,6 +11,8 @@ dev-vcs/git -rust
 # gobject-introspection[python]).
 dev-lang/python -bluetooth
 
+# Python implementation selection (portage wants the native python3_13 build).
+dev-python/* python_targets_python3_13
 app-i18n/fcitx-qt qt5
 dev-libs/libxml2 python
 media-libs/libsdl2 -fcitx4
@@ -48,4 +50,3 @@ sys-apps/systemd boot policykit
 media-video/pipewire bluetooth dbus extra ffmpeg fftw flatpak pipewire-alsa sound-server v4l
 # closure of the stage4 dependency graph (autounmask proposals).
 >=media-libs/gst-plugins-base-1.26.11 opengl
->=dev-python/docutils-0.23 python_targets_python3_13
