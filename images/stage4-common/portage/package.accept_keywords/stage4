@@ -1,5 +1,4 @@
 # ~amd64 / ** packages needed on the x32 binhost.
-app-mobilephone/scrcpy ~amd64
 games-arcade/opensonic ~amd64
 net-fs/smbnetfs ~amd64
 app-containers/waydroid ~amd64

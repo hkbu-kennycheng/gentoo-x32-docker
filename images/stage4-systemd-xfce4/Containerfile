@@ -7,8 +7,9 @@ FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 ARG MAKEOPTS
 ARG EMERGE_DEFAULT_OPTS
 
-RUN emerge --quiet --noreplace \
-    xfce-base/xfce4-meta \
-    net-misc/networkmanager \
-    gnome-extra/nm-applet \
+# Install packages one by one: an unresolvable optional piece (e.g. a USE
+# flag whose dependency only exists ~arch) should not sink the whole image.
+RUN for pkg in xfce-base/xfce4-meta net-misc/networkmanager gnome-extra/nm-applet; do \
+        emerge --quiet --noreplace "$pkg" || echo "::warning::could not install $pkg"; \
+    done \
     && rm -rf /var/cache/distfiles/*

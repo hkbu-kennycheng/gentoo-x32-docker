@@ -10,10 +10,11 @@ ARG EMERGE_DEFAULT_OPTS
 
 RUN emerge-webrsync && emerge --sync x32-overlay
 
-RUN emerge --quiet --noreplace \
-    xfce-base/xfce4-meta \
-    net-misc/networkmanager \
-    gnome-extra/nm-applet \
+# Install packages one by one: an unresolvable optional piece (e.g. a USE
+# flag whose dependency only exists ~arch) should not sink the whole image.
+RUN for pkg in xfce-base/xfce4-meta net-misc/networkmanager gnome-extra/nm-applet; do \
+        emerge --quiet --noreplace "$pkg" || echo "::warning::could not install $pkg"; \
+    done \
     && rm -rf /var/cache/distfiles/*
 
 RUN sed -i 's/COMMON_FLAGS="-O2 -pipe/COMMON_FLAGS="-Os -pipe/g' /etc/portage/make.conf \

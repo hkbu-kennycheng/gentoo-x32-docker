@@ -5,7 +5,6 @@ app-laptop/laptop-mode-tools
 app-misc/asciinema
 app-misc/jq
 app-misc/tmux
-app-mobilephone/scrcpy
 app-office/onlyoffice-bin
 app-portage/gentoolkit
 app-text/mupdf
