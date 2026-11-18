@@ -8,7 +8,11 @@ FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 ARG MAKEOPTS
 ARG EMERGE_DEFAULT_OPTS
 
-RUN emerge-webrsync && emerge --sync x32-overlay
+# Force a fresh overlay checkout: this image exists to test updated overlay
+# ebuilds/patches, so a cached checkout must not be reused.
+RUN emerge-webrsync \
+    && rm -rf /var/db/repos/x32-overlay \
+    && emerge --sync x32-overlay
 
 # Install packages one by one: an unresolvable optional piece (e.g. a USE
 # flag whose dependency only exists ~arch) should not sink the whole image.

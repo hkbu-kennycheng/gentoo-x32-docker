@@ -19,7 +19,10 @@ RUN echo 'FEATURES="getbinpkg -ipc-sandbox -network-sandbox -pid-sandbox"' >> /e
 RUN emerge-webrsync -q \
     && USE="-rust" emerge -qu --noreplace dev-vcs/git eselect-repository
 
+# Always fetch the overlay's latest commit: a cached repository checkout is
+# never reused, so builds see current patches and ebuilds.
 RUN eselect repository add x32-overlay git https://github.com/hkbu-kennycheng/x32-overlay.git \
+    && rm -rf /var/db/repos/x32-overlay \
     && emerge --sync x32-overlay
 
 # The x32-overlay carries the ABI-correct x32 patches (ruby coroutines, etc.)
