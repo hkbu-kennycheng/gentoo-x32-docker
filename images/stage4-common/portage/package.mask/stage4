@@ -1,5 +1,4 @@
 # Masked to keep the x32 binhost consistent with the x32-overlay ebuilds.
-# (single-purpose masks live in sibling files: p11-kit-bootstrap)
 >=net-libs/webkit-gtk-2.60
 # librsvg >= 2.60 is a Rust package; use the x32-overlay version instead.
 >=gnome-base/librsvg-2.60

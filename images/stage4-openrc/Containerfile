@@ -34,10 +34,6 @@ RUN mkdir -p /etc/portage/patches \
 # Shared build-host configuration (USE flags, keywords, per-package settings).
 COPY images/stage4-common/portage/ /etc/portage/
 
-# Keep p11-kit at the stage3 version (0.26.2). The 0.26.3+ `trust` binary
-# segfaults during baselayout-java's postinst (`trust extract ... java-cacerts`),
-# which aborts the @world build ~3 h in; the mask is copied in above.
-
 # A single transient failure must not discard a multi-hour build: resume once.
 RUN emerge -qDNu @world --exclude dev-util/cargo-c \
         $(grep -v '^#' /etc/portage/sets/stage4) \
