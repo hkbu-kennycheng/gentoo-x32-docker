@@ -1,0 +1,4 @@
+# p11-kit >= 0.26.3 segfaults when baselayout-java's postinst runs
+# `trust extract --format=java-cacerts` inside an x32 container, which aborts
+# the @world build hours in. 0.26.2 (shipped by the stage3 base) works.
+>=app-crypt/p11-kit-0.26.3

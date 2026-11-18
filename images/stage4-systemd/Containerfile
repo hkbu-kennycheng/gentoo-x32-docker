@@ -35,11 +35,14 @@ RUN mkdir -p /etc/portage/patches \
 # Shared build-host configuration (USE flags, keywords, per-package settings).
 COPY images/stage4-common/portage/ /etc/portage/
 
+# Keep p11-kit at the stage3 version (0.26.2). The 0.26.3+ `trust` binary
+# segfaults during baselayout-java's postinst (`trust extract ... java-cacerts`),
+# which aborts the @world build ~3 h in; see
+# images/stage4-common/portage/package.mask/p11-kit-bootstrap.
+
 # The x32 toolchain set is fixed: rust-bin from the overlay, cargo-c masked
 # (>=0.10.17 needs a port), git on its C implementation.
-# A single transient postinst crash (e.g. a one-off segfault in
-# `trust extract` during baselayout-java postinst) must not discard a
-# multi-hour build: resume once instead of restarting from scratch.
+# A single transient failure must not discard a multi-hour build: resume once.
 RUN emerge -qDNu @world --exclude dev-util/cargo-c --exclude dev-vcs/git \
         $(grep -v '^#' /etc/portage/sets/stage4) \
     || emerge -q --resume \
