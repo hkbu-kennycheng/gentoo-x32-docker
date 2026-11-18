@@ -8,6 +8,11 @@ FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 ARG MAKEOPTS
 ARG EMERGE_DEFAULT_OPTS
 
+# The base image wires /etc/portage/patches to the overlay patch tree; keep
+# that link after any overlay re-sync (ruby 3.3 needs the x32 coroutine patch).
+RUN [ -L /etc/portage/patches ] \
+    || { mkdir -p /etc/portage && ln -sfn /var/db/repos/x32-overlay/profiles/x32/patches /etc/portage/patches; }
+
 # Force a fresh overlay checkout: this image exists to test updated overlay
 # ebuilds/patches, so a cached checkout must not be reused.
 RUN emerge-webrsync \

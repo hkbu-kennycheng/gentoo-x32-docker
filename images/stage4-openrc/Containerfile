@@ -34,6 +34,8 @@ RUN mkdir -p /etc/portage/patches \
 # Shared build-host configuration (USE flags, keywords, per-package settings).
 COPY images/stage4-common/portage/ /etc/portage/
 
+# A single transient postinst crash must not discard a multi-hour build.
 RUN emerge -qDNu @world --exclude dev-util/cargo-c \
-    $(grep -v '^#' /etc/portage/sets/stage4) \
+        $(grep -v '^#' /etc/portage/sets/stage4) \
+    || emerge -q --resume \
     && rm -rf /var/cache/distfiles/*

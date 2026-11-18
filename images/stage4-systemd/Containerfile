@@ -37,6 +37,10 @@ COPY images/stage4-common/portage/ /etc/portage/
 
 # The x32 toolchain set is fixed: rust-bin from the overlay, cargo-c masked
 # (>=0.10.17 needs a port), git on its C implementation.
+# A single transient postinst crash (e.g. a one-off segfault in
+# `trust extract` during baselayout-java postinst) must not discard a
+# multi-hour build: resume once instead of restarting from scratch.
 RUN emerge -qDNu @world --exclude dev-util/cargo-c --exclude dev-vcs/git \
-    $(grep -v '^#' /etc/portage/sets/stage4) \
+        $(grep -v '^#' /etc/portage/sets/stage4) \
+    || emerge -q --resume \
     && rm -rf /var/cache/distfiles/*

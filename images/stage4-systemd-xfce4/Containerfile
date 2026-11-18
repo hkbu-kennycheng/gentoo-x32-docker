@@ -7,6 +7,11 @@ FROM docker.io/kennycheng/gentoo-stage4:x32-systemd
 ARG MAKEOPTS
 ARG EMERGE_DEFAULT_OPTS
 
+# The base image wires /etc/portage/patches to the overlay patch tree; keep
+# that link after any overlay re-sync (ruby 3.3 needs the x32 coroutine patch).
+RUN [ -L /etc/portage/patches ] \
+    || { mkdir -p /etc/portage && ln -sfn /var/db/repos/x32-overlay/profiles/x32/patches /etc/portage/patches; }
+
 # Install packages one by one: an unresolvable optional piece (e.g. a USE
 # flag whose dependency only exists ~arch) should not sink the whole image.
 RUN for pkg in xfce-base/xfce4-meta net-misc/networkmanager gnome-extra/nm-applet; do \
