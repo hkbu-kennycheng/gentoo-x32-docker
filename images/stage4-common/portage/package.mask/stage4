@@ -1,7 +1,9 @@
 # Masked to keep the x32 binhost consistent with the x32-overlay ebuilds.
 >=net-libs/webkit-gtk-2.60
 # librsvg >= 2.60 is a Rust package; use the x32-overlay version instead.
->=gnome-base/librsvg-2.60
+# Repo-qualified: an unqualified atom also matches the overlay's 2.62.x and
+# would leave no librsvg at all.
+>=gnome-base/librsvg-2.60::gentoo
 # The Rust toolchain packages do not build for x32 (no ELF32 support in the
 # Rust bootstrap chain). rust-bin is used instead.
 dev-lang/rust
