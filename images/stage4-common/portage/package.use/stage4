@@ -34,6 +34,9 @@ dev-python/pillow -webp -truetype
 # -ukify: UKIs need an EFI stub, which x32 masks (-efistub). uki would pull
 # sys-apps/systemd[boot] onto the openrc image and conflict with systemd-utils.
 sys-kernel/installkernel dracut -ukify -uki
+# The binhost image needs no kernel: -dist-kernel avoids virtual/dist-kernel
+# -> gentoo-kernel-bin -> sbsigntools -> gnu-efi (no EFI stub on x32).
+sys-kernel/linux-firmware -dist-kernel
 dev-libs/libutf8proc -cjk
 net-libs/ngtcp2 gnutls
 

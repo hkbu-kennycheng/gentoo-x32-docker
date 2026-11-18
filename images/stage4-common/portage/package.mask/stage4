@@ -10,3 +10,14 @@ dev-lang/rust
 # the stage4 set may depend on it (dev-util/android-tools was dropped).
 dev-lang/go
 dev-lang/go-bootstrap
+# gnu-efi (and its consumers) only produce EDK2 EFI-ABI objects and fail on
+# x32 ("X32 does not support 'ms_abi' attribute"). A binhost image never
+# needs them.
+sys-boot/gnu-efi
+app-crypt/efitools
+app-crypt/pesign
+app-crypt/sbsigntools
+sys-apps/fwupd-efi
+sys-boot/elilo
+sys-boot/refind
+sys-boot/syslinux
