@@ -35,14 +35,10 @@ RUN mkdir -p /etc/portage/patches \
 # Shared build-host configuration (USE flags, keywords, per-package settings).
 COPY images/stage4-common/portage/ /etc/portage/
 
+COPY scripts/emerge-world.sh /usr/local/bin/emerge-world.sh
+
 # The x32 toolchain set is fixed: rust-bin from the overlay, cargo-c masked
-# (>=0.10.17 needs a port), git on its C implementation.
-#
-# A single transient failure must not discard a multi-hour build, so retry via
-# `emerge --resume`; the build still fails if that retry fails too.
-RUN if ! emerge -qDNu @world --exclude dev-util/cargo-c --exclude dev-vcs/git \
-        $(grep -v '^#' /etc/portage/sets/stage4); then
-        echo "::error::first emerge pass failed, resuming"
-        emerge -q --resume
-    fi \
-    && rm -rf /var/cache/distfiles/*
+# (>=0.10.17 needs a port), git on its C implementation. The helper retries
+# once with `emerge --resume` so one transient failure does not discard the
+# multi-hour build, and still fails if the retry fails.
+RUN sh /usr/local/bin/emerge-world.sh --exclude dev-util/cargo-c --exclude dev-vcs/git
