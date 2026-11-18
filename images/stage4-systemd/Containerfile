@@ -37,8 +37,12 @@ COPY images/stage4-common/portage/ /etc/portage/
 
 # The x32 toolchain set is fixed: rust-bin from the overlay, cargo-c masked
 # (>=0.10.17 needs a port), git on its C implementation.
-# A single transient failure must not discard a multi-hour build: resume once.
-RUN emerge -qDNu @world --exclude dev-util/cargo-c --exclude dev-vcs/git \
-        $(grep -v '^#' /etc/portage/sets/stage4) \
-    || emerge -q --resume \
+#
+# A single transient failure must not discard a multi-hour build, so retry via
+# `emerge --resume`; the build still fails if that retry fails too.
+RUN if ! emerge -qDNu @world --exclude dev-util/cargo-c --exclude dev-vcs/git \
+        $(grep -v '^#' /etc/portage/sets/stage4); then
+        echo "::error::first emerge pass failed, resuming"
+        emerge -q --resume
+    fi \
     && rm -rf /var/cache/distfiles/*
