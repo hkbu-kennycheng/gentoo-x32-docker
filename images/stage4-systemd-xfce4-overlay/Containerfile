@@ -14,8 +14,12 @@ RUN [ -L /etc/portage/patches ] \
     || { mkdir -p /etc/portage && ln -sfn /var/db/repos/x32-overlay/profiles/x32/patches /etc/portage/patches; }
 
 # Force a fresh overlay checkout: this image exists to test updated overlay
-# ebuilds/patches, so a cached checkout must not be reused.
-RUN emerge-webrsync \
+# ebuilds/patches, so a cached checkout must not be reused. The commit passed
+# by scripts/build.sh is echoed so each overlay revision produces a new layer.
+ARG X32_OVERLAY_COMMIT
+RUN test -n "$X32_OVERLAY_COMMIT" \
+    && echo "Syncing x32-overlay at $X32_OVERLAY_COMMIT" \
+    && emerge-webrsync \
     && rm -rf /var/db/repos/x32-overlay \
     && emerge --sync x32-overlay
 

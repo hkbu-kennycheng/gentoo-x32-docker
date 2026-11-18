@@ -20,8 +20,13 @@ RUN emerge-webrsync -q \
     && USE="-rust" emerge -qu --noreplace dev-vcs/git eselect-repository
 
 # Always fetch the overlay's latest commit: a cached repository checkout is
-# never reused, so builds see current patches and ebuilds.
-RUN eselect repository add x32-overlay git https://github.com/hkbu-kennycheng/x32-overlay.git \
+# never reused, so builds see current patches and ebuilds. scripts/build.sh
+# passes the overlay's HEAD commit; it is part of the command line so a new
+# overlay commit invalidates this layer.
+ARG X32_OVERLAY_COMMIT
+RUN test -n "$X32_OVERLAY_COMMIT" \
+    && echo "Syncing x32-overlay at $X32_OVERLAY_COMMIT" \
+    && eselect repository add x32-overlay git https://github.com/hkbu-kennycheng/x32-overlay.git \
     && rm -rf /var/db/repos/x32-overlay \
     && emerge --sync x32-overlay
 

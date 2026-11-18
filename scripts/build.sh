@@ -30,10 +30,23 @@ if [ -n "${STAGE3_FLAVOR:-}" ]; then
 	"$root/scripts/fetch-stage3.sh" "$STAGE3_FLAVOR" "$dir"
 fi
 
+# Images that clone the x32-overlay inside the build (image.env: X32_OVERLAY=1)
+# get the overlay's current commit as a build arg. The Containerfile echoes it
+# in the sync step, so a new overlay commit changes the step's text and the
+# layer from an older checkout is not reused.
+extra_args=
+if [ "${X32_OVERLAY:-0}" = 1 ]; then
+	overlay_commit=$(git ls-remote https://github.com/hkbu-kennycheng/x32-overlay.git refs/heads/main | cut -f1)
+	[ -n "$overlay_commit" ] || { echo "error: could not resolve x32-overlay HEAD" >&2; exit 1; }
+	extra_args="--build-arg X32_OVERLAY_COMMIT=$overlay_commit"
+fi
+
 # --pull=newer keeps FROM bases current for scheduled builds.
+# shellcheck disable=SC2086 # extra_args must be word-split
 "$engine" build --pull=newer -f "$dir/Containerfile" -t "$tag" \
 	--build-arg "MAKEOPTS=${MAKEOPTS:--j$(nproc)}" \
 	--build-arg "EMERGE_DEFAULT_OPTS=${EMERGE_DEFAULT_OPTS:---jobs=4}" \
+	${extra_args} \
 	"$root"
 
 if [ "$push" = "--push" ]; then
