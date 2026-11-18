@@ -37,6 +37,13 @@ COPY images/stage4-common/portage/ /etc/portage/
 
 COPY scripts/emerge-world.sh /usr/local/bin/emerge-world.sh
 
+# p11-kit's `trust extract --format=java-cacerts` segfaults for every format
+# on x32 (p11-kit 0.26.4 and 0.26.6 alike), which makes baselayout-java's
+# postinst fail. That postinst is guarded by [[ ! -f cacerts ]], so seed the
+# file first; the official bundle can be regenerated later from a working
+# x32 p11-kit.
+RUN mkdir -p /etc/ssl/certs/java && : > /etc/ssl/certs/java/cacerts
+
 # The x32 toolchain set is fixed: rust-bin from the overlay, cargo-c masked
 # (>=0.10.17 needs a port), git on its C implementation. The helper retries
 # once with `emerge --resume` so one transient failure does not discard the
