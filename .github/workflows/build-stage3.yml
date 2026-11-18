@@ -1,0 +1,48 @@
+name: build-stage3
+
+# stage3 images are cheap (~10 min) and are the base of everything else, so
+# they build and push automatically whenever their inputs change.
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Comma-separated image dirs to build (empty = both)"
+        type: string
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - "images/stage3-*/**"
+      - "scripts/fetch-stage3.sh"
+      - "scripts/build.sh"
+      - ".github/workflows/build-stage3.yml"
+      - ".github/actions/build-image/action.yml"
+  schedule:
+    # Runs an hour before build-images.yml's weekly stage4 build so the
+    # stage4 images pick up the refreshed stage3 base.
+    - cron: "0 3 * * 6"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-stage3
+  cancel-in-progress: false
+
+jobs:
+  stage3:
+    name: ${{ matrix.image }}
+    runs-on: [self-hosted, linux, x64, podman]
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [stage3-openrc, stage3-systemd]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/build-image
+        with:
+          image: ${{ matrix.image }}
+          only: ${{ inputs.only }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}

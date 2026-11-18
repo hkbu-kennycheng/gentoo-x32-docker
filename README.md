@@ -62,17 +62,22 @@ layer cache is the engine's own image store (do not pass `--no-cache`).
 
 ## CI
 
-`.github/workflows/build-images.yml` runs on a self-hosted Linux runner with
-the `podman` label:
+Two workflows run on a self-hosted Linux runner with the `podman` label:
 
-- `push` to `main` (changes under `images/`, `scripts/`, `.github/`)
-- weekly `schedule`
-- manual `workflow_dispatch` with an optional `only` list, e.g.
-  `stage4-systemd,stage4-systemd-binhost`
+- `build-stage3.yml` — builds and pushes `stage3-openrc` and `stage3-systemd`
+  whenever `images/stage3-*/**`, the fetch/build scripts, the shared action or
+  the workflow itself change; weekly on Saturday 03:00; and on manual
+  `workflow_dispatch` (optional `only` list).
+- `build-images.yml` — builds and pushes the five stage4 images whenever
+  `images/stage4-*/**`, `images/stage4-common/**`, `scripts/build.sh`, the
+  shared action or the workflow itself change; weekly on Saturday 04:00 (an
+  hour after the stage3 refresh); and on manual `workflow_dispatch` with an
+  optional `only` list, e.g. `stage4-systemd,stage4-systemd-binhost`.
 
-The `stage3` matrix builds and pushes stage3 first; the `stage4` matrix then
-builds/pushes the five derived images. Full `@world` builds take hours — the
-job timeout is 12 h.
+Both workflows bump the tag on every run, and stage4 builds `--pull=newer`
+their `gentoo-stage3:x32-*` base, so a pushed stage3 is picked up by the next
+stage4 build. Full `@world` builds take hours — the stage4 job timeout is
+12 h.
 
 **Persistent runner store, don't clean it.** Build caching relies on the
 podman image store on the runner's disk. If you prune images on the runner,
