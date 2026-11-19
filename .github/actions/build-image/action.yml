@@ -29,6 +29,17 @@ runs:
           echo "build=1" >> "$GITHUB_OUTPUT"
         fi
 
+    # Rootless podman refuses to start if its runtime dir vanishes, and on this
+    # openrc+elogind host /run/user/<uid> is removed as soon as the runner
+    # session is considered closed (killing multi-hour builds mid-step). Pin
+    # XDG_RUNTIME_DIR to a tmpfs path that survives session churn.
+    - if: steps.check.outputs.build == '1'
+      shell: bash
+      run: |
+        rt=${CI_XDG_RUNTIME_DIR:-/dev/shm/ci-runtime-$UID}
+        install -d -m 0700 "$rt"
+        echo "XDG_RUNTIME_DIR=$rt" >> "$GITHUB_ENV"
+
     - if: steps.check.outputs.build == '1'
       shell: bash
       env:

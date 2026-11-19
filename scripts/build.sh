@@ -41,6 +41,17 @@ if [ "${X32_OVERLAY:-0}" = 1 ]; then
 	extra_args="--build-arg X32_OVERLAY_COMMIT=$overlay_commit"
 fi
 
+# Rootless podman needs a runtime dir that survives the whole build. On the
+# openrc+elogind CI host /run/user/<uid> disappears when the runner session is
+# reaped, which aborts in-flight builds ("lstat /run/user/1000: no such file or
+# directory"), so default to a tmpfs path instead (the action also pins one
+# via XDG_RUNTIME_DIR).
+if [ -z "${XDG_RUNTIME_DIR:-}" ] || [ ! -d "${XDG_RUNTIME_DIR}" ]; then
+	XDG_RUNTIME_DIR=${CI_XDG_RUNTIME_DIR:-/dev/shm/ci-runtime-$(id -u)}
+	install -d -m 0700 "$XDG_RUNTIME_DIR"
+	export XDG_RUNTIME_DIR
+fi
+
 # --pull=newer keeps FROM bases current for scheduled builds.
 # shellcheck disable=SC2086 # extra_args must be word-split
 "$engine" build --pull=newer -f "$dir/Containerfile" -t "$tag" \
