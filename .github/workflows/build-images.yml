@@ -37,6 +37,10 @@ jobs:
     timeout-minutes: 720
     strategy:
       fail-fast: false
+      # One image at a time: the self-hosted runner has 12 cores / 32 GiB and
+      # stage4 builds are emerge --jobs=4 x MAKEOPTS=-j12. Two images at once
+      # (openrc + systemd) OOM-killed cc1plus while compiling WebCore.
+      max-parallel: 1
       matrix:
         image:
           - stage4-openrc
