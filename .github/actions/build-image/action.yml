@@ -47,9 +47,15 @@ runs:
         DOCKERHUB_TOKEN: ${{ inputs.dockerhub_token }}
       run: echo "$DOCKERHUB_TOKEN" | podman login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
 
-    # Layer cache is the runner's persistent podman store; see scripts/build.sh.
+    # scripts/build.sh clamps MAKEOPTS to the build's CPU count and defaults
+    # EMERGE_DEFAULT_OPTS to a modest job count, so a huge nproc-derived job
+    # count (which OOMs cc1plus during WebCore) cannot happen even if a runner
+    # forwards a different MAKEOPTS than expected.
     - if: steps.check.outputs.build == '1'
       shell: bash
       env:
         IMAGE: ${{ inputs.image }}
-      run: scripts/build.sh "$IMAGE" --push
+      run: |
+        export MAKEOPTS="-j$(nproc)"
+        export EMERGE_DEFAULT_OPTS="--jobs=2"
+        scripts/build.sh "$IMAGE" --push
